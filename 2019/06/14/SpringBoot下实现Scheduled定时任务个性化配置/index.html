@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Scheduled,">
 
 
 
@@ -79,17 +79,23 @@
 
 
 
-<meta name="description" content="基础信息 姓名：贺金秋 性别：男 职业：Java开发  联系方式 手机：13851628611 邮箱：932789649@qq.com QQ：932789649 现住址：南京市浦口区 工作地址：南京市建邺区奥体大街68号新城科技园国际研发总部园1号楼6-8层">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于作者">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="SpringBoot下实现Scheduled定时任务个性化配置1、需求概述：后台页面提供给用户可配置化的定时任务功能，用户可以新增、编辑、暂停、开启、删除定时任务。用户新增时输入的内容作为执行定时任务的条件，去数据库捞取数据。用户设置的时间为定时任务执行的时间，每新增一条信息即产生一条新的定时任务。 2、简单分析：a.用户新增定时任务，将执行条件、任务触发时间等信息保存到数据库；并开启该条定时任务">
+<meta name="keywords" content="Scheduled">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot下实现Scheduled定时任务个性化配置">
+<meta property="og:url" content="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/index.html">
 <meta property="og:site_name" content="秋少如风">
-<meta property="og:description" content="基础信息 姓名：贺金秋 性别：男 职业：Java开发  联系方式 手机：13851628611 邮箱：932789649@qq.com QQ：932789649 现住址：南京市浦口区 工作地址：南京市建邺区奥体大街68号新城科技园国际研发总部园1号楼6-8层">
+<meta property="og:description" content="SpringBoot下实现Scheduled定时任务个性化配置1、需求概述：后台页面提供给用户可配置化的定时任务功能，用户可以新增、编辑、暂停、开启、删除定时任务。用户新增时输入的内容作为执行定时任务的条件，去数据库捞取数据。用户设置的时间为定时任务执行的时间，每新增一条信息即产生一条新的定时任务。 2、简单分析：a.用户新增定时任务，将执行条件、任务触发时间等信息保存到数据库；并开启该条定时任务">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-14T03:30:57.711Z">
+<meta property="og:image" content="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-39870fecf1f7b869.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-e68e205062fa0fc0.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-2e4231f23794324d.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-95bc9b902cf17852.jpg">
+<meta property="og:updated_time" content="2019-06-14T07:40:36.505Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于作者">
-<meta name="twitter:description" content="基础信息 姓名：贺金秋 性别：男 职业：Java开发  联系方式 手机：13851628611 邮箱：932789649@qq.com QQ：932789649 现住址：南京市浦口区 工作地址：南京市建邺区奥体大街68号新城科技园国际研发总部园1号楼6-8层">
+<meta name="twitter:title" content="SpringBoot下实现Scheduled定时任务个性化配置">
+<meta name="twitter:description" content="SpringBoot下实现Scheduled定时任务个性化配置1、需求概述：后台页面提供给用户可配置化的定时任务功能，用户可以新增、编辑、暂停、开启、删除定时任务。用户新增时输入的内容作为执行定时任务的条件，去数据库捞取数据。用户设置的时间为定时任务执行的时间，每新增一条信息即产生一条新的定时任务。 2、简单分析：a.用户新增定时任务，将执行条件、任务触发时间等信息保存到数据库；并开启该条定时任务">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-39870fecf1f7b869.jpg">
 
 
 
@@ -119,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/">
+  <link rel="canonical" href="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/">
 
 
 
 
 
-  <title>关于作者 | 秋少如风</title>
+  <title>SpringBoot下实现Scheduled定时任务个性化配置 | 秋少如风</title>
   
 
 
@@ -292,45 +298,176 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="贺金秋">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秋少如风">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">关于作者</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h3 id="基础信息"><a href="#基础信息" class="headerlink" title="基础信息"></a>基础信息</h3><ul>
-<li>姓名：贺金秋</li>
-<li>性别：男</li>
-<li>职业：Java开发</li>
-</ul>
-<h3 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h3><ul>
-<li>手机：13851628611</li>
-<li>邮箱：<a href="mailto:932789649@qq.com" target="_blank" rel="noopener">932789649@qq.com</a></li>
-<li>QQ：932789649</li>
-<li>现住址：南京市浦口区</li>
-<li>工作地址：南京市建邺区奥体大街68号新城科技园国际研发总部园1号楼6-8层</li>
-</ul>
-
+          <h1 class="post-title" itemprop="name headline">SpringBoot下实现Scheduled定时任务个性化配置</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-14T15:14:59+08:00">
+                2019-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="SpringBoot下实现Scheduled定时任务个性化配置"><a href="#SpringBoot下实现Scheduled定时任务个性化配置" class="headerlink" title="SpringBoot下实现Scheduled定时任务个性化配置"></a>SpringBoot下实现Scheduled定时任务个性化配置</h2><h3 id="1、需求概述："><a href="#1、需求概述：" class="headerlink" title="1、需求概述："></a>1、需求概述：</h3><p>后台页面提供给用户可配置化的定时任务功能，用户可以新增、编辑、暂停、开启、删除定时任务。用户新增时输入的内容作为执行定时任务的条件，去数据库捞取数据。用户设置的时间为定时任务执行的时间，每新增一条信息即产生一条新的定时任务。</p>
+<h3 id="2、简单分析："><a href="#2、简单分析：" class="headerlink" title="2、简单分析："></a>2、简单分析：</h3><p>a.用户新增定时任务，将执行条件、任务触发时间等信息保存到数据库；并开启该条定时任务；</p>
+<p>b.用户修改定时任务，更新数据库，重新开启该条定时任务；</p>
+<p>c.项目启动时，要扫描数据库定时任务信息，并将任务添加至定时任务组件中，开启它；</p>
+<h3 id="3、技术点："><a href="#3、技术点：" class="headerlink" title="3、技术点："></a>3、技术点：</h3><p>一般我们都是从xml配置或者注解中读取定时任务配置，而现在需要用代码来实现它。定时任务可配置化就肯定要做持久层处理。</p>
+<h3 id="4、代码实现："><a href="#4、代码实现：" class="headerlink" title="4、代码实现："></a>4、代码实现：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line"></span><br><span class="line">public class ScheduleConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line"></span><br><span class="line">    private ThreadPoolTaskScheduler taskScheduler;</span><br><span class="line"></span><br><span class="line">    private Map&lt;String, ScheduledFuture&lt;?&gt;&gt; futureMap = new HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    private String cron = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line"></span><br><span class="line">    * 取消定时任务</span><br><span class="line"></span><br><span class="line">    *</span><br><span class="line"></span><br><span class="line">    * @param id 任务id</span><br><span class="line"></span><br><span class="line">    */</span><br><span class="line"></span><br><span class="line">    public void cancelTimedTask(String id) &#123;</span><br><span class="line"></span><br><span class="line">        if (futureMap.get(id) != null) &#123;</span><br><span class="line"></span><br><span class="line">            //取消定时任务</span><br><span class="line"></span><br><span class="line">            futureMap.get(id).cancel(true);</span><br><span class="line"></span><br><span class="line">            futureMap.remove(id);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line"></span><br><span class="line">    * 新建并开启定时任务</span><br><span class="line"></span><br><span class="line">    *</span><br><span class="line"></span><br><span class="line">    * @param id  定时任务唯一标识id</span><br><span class="line"></span><br><span class="line">    * @param cron 定时任务时间表达式</span><br><span class="line"></span><br><span class="line">    * @param task 定时任务task</span><br><span class="line"></span><br><span class="line">    */</span><br><span class="line"></span><br><span class="line">    public void startTimedTask(String id, String cron, Runnable task) &#123;</span><br><span class="line"></span><br><span class="line">        this.cron = cron;</span><br><span class="line"></span><br><span class="line">        ScheduledFuture&lt;?&gt; future = taskScheduler.schedule(task, new Trigger() &#123;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line"></span><br><span class="line">            public Date nextExecutionTime(TriggerContext triggerContext) &#123;</span><br><span class="line"></span><br><span class="line">                if (StringUtils.isEmpty(cron)) &#123;</span><br><span class="line"></span><br><span class="line">                    return null;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 定时任务触发，可修改定时任务的执行周期</span><br><span class="line"></span><br><span class="line">                CronTrigger trigger = new CronTrigger(cron);</span><br><span class="line"></span><br><span class="line">                Date nextExecDate = trigger.nextExecutionTime(triggerContext);</span><br><span class="line"></span><br><span class="line">                return nextExecDate;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        futureMap.put(id, future);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>笔者这里ThreadPoolTaskScheduler 这个对象因为公司自己的jar包里已经初始化过了，所以直接注入使用了，不然需要初始化使用。</p>
+<p>这个里面定时任务表达式cron和task任务类作为两个变量传进来，实现了定时任务可配置化的要求。futureMap 这个map对象用作存储开启定时任务后返回的future，因为后面取消定时任务会需要用到。</p>
+<p>String cron, Runnable task两个参数：根据用户设定的执行时间，自己转换成cron表达式，并存入数据库中，具体的任务对象可以定义实现Runnable接口即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 报表模板可配置化任务</span><br><span class="line"> *</span><br><span class="line"> * @author : hejinqiu</span><br><span class="line"> * @date : 2019/3/18</span><br><span class="line"> */</span><br><span class="line">public class TemplateReportTask implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">    private static Logger logger = LoggerFactory.getLogger(TemplateReportTask.class);</span><br><span class="line"></span><br><span class="line">    private ReportService reportService;</span><br><span class="line"></span><br><span class="line">    private TemplateReport templateReport;</span><br><span class="line"></span><br><span class="line">    public TemplateReportTask(TemplateReport templateReport) &#123;</span><br><span class="line">        this.templateReport = templateReport;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        //TODO 具体的业务</span><br><span class="line">        System.out.println(templateReport.getTemplateId() + &quot;定时任务执行拉！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这个是我的需求所自定义的任务类，run方法里写具体的业务代码 。<br>至此，定时任务的开启，取消功能其实就已经实现了，停止和取消是一样的。</p>
+<p>再贴一下启动的代码，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TemplateReportTask templateReportTask = new TemplateReportTask(templateReport);</span><br><span class="line">scheduleConfig.startTimedTask(templateReport.getTemplateId(), templateReport.getCron(), templateReportTask);</span><br><span class="line">logger.info(templateReport.getTemplateId() + &quot;定时任务开启成功&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>task传你自己定义的任务类即可。</p>
+<p>最后还差一个在项目启动的时候，需要去扫描数据库的定时任务配置信息，把符合要求的定时任务都开启即可。项目启动就执行某个方法，实现CommandLineRunner或者ApplicationRunner 接口即可。贴下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line"></span><br><span class="line">public class ReportRunner implements ApplicationRunner &#123;</span><br><span class="line"></span><br><span class="line">    private Logger logger = LoggerFactory.getLogger(ReportRunner.class);</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line"></span><br><span class="line">    private ScheduleConfig scheduleConfig;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line"></span><br><span class="line">    private TemplateReportService templateReportService;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line"></span><br><span class="line">    public void run(ApplicationArguments args) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">        // 项目启动加载所有报表配置 将定时任务添加至定时任务组件中</span><br><span class="line"></span><br><span class="line">        List&lt;TemplateReport&gt; reports = templateReportService.searchByStatus();</span><br><span class="line"></span><br><span class="line">        for (TemplateReport templateReport : reports) &#123;</span><br><span class="line"></span><br><span class="line">            scheduleConfig.startTimedTask(templateReport.getTemplateId(), templateReport.getCron(),</span><br><span class="line"></span><br><span class="line">                            new TemplateReportTask(templateReport));</span><br><span class="line"></span><br><span class="line">            logger.info(templateReport.getTemplateId() + &quot;定时任务开启成功&quot;);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面测试下，数据库存在两条定时任务信息，cron时间表达式暂设每5秒执行一次。</p>
+<p><img src="/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-39870fecf1f7b869.jpg" alt="任务id"></p>
+<p><img src="/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-e68e205062fa0fc0.jpg" alt="cron表达式"></p>
+<p>启动项目，看下效果。</p>
+<p><img src="/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-2e4231f23794324d.jpg" alt="项目启动定时任务开启成功"></p>
+<p><img src="/2019/06/14/SpringBoot下实现Scheduled定时任务个性化配置/16620010-95bc9b902cf17852.jpg" alt="5秒一次，两个定时任务都在执行"></p>
+<p>至此，Scheduled定时任务可配置化的功能就顺利实现拉！</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Scheduled/" rel="tag"># Scheduled</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -339,6 +476,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -439,7 +580,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础信息"><span class="nav-number">1.</span> <span class="nav-text">基础信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#联系方式"><span class="nav-number">2.</span> <span class="nav-text">联系方式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot下实现Scheduled定时任务个性化配置"><span class="nav-number">1.</span> <span class="nav-text">SpringBoot下实现Scheduled定时任务个性化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、需求概述："><span class="nav-number">1.1.</span> <span class="nav-text">1、需求概述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、简单分析："><span class="nav-number">1.2.</span> <span class="nav-text">2、简单分析：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、技术点："><span class="nav-number">1.3.</span> <span class="nav-text">3、技术点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、代码实现："><span class="nav-number">1.4.</span> <span class="nav-text">4、代码实现：</span></a></li></ol></li></ol></div>
             
 
           </div>
