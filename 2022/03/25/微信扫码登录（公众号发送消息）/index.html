@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.jinqiuhe.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="微信扫码登录（公众号发送消息）1、需求概述：pc提供微信扫码登录功能，用户在关注了公众号并且完成注册的前提下，可以通过微信扫描电脑端二维码登录。 2、简单分析实现微信扫描登录主要有三种方式： 1.通过微信公众平台生成带参数的二维 2.通过微信公众平台微信网页授权登录 3.通过微信开发平台微信登录功能 本次我们通过第一种，微信场景二维码的方式实现。交互逻辑： a.客户端调用服务端生成二维码接口，并开">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信扫码登录（公众号发送消息）">
+<meta property="og:url" content="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/index.html">
+<meta property="og:site_name" content="秋少如风">
+<meta property="og:description" content="微信扫码登录（公众号发送消息）1、需求概述：pc提供微信扫码登录功能，用户在关注了公众号并且完成注册的前提下，可以通过微信扫描电脑端二维码登录。 2、简单分析实现微信扫描登录主要有三种方式： 1.通过微信公众平台生成带参数的二维 2.通过微信公众平台微信网页授权登录 3.通过微信开发平台微信登录功能 本次我们通过第一种，微信场景二维码的方式实现。交互逻辑： a.客户端调用服务端生成二维码接口，并开">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/img.png">
+<meta property="og:image" content="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/img_1.png">
+<meta property="og:image" content="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/img_2.png">
+<meta property="og:image" content="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/img_3.png">
+<meta property="og:updated_time" content="2022-03-25T09:32:57.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信扫码登录（公众号发送消息）">
+<meta name="twitter:description" content="微信扫码登录（公众号发送消息）1、需求概述：pc提供微信扫码登录功能，用户在关注了公众号并且完成注册的前提下，可以通过微信扫描电脑端二维码登录。 2、简单分析实现微信扫描登录主要有三种方式： 1.通过微信公众平台生成带参数的二维 2.通过微信公众平台微信网页授权登录 3.通过微信开发平台微信登录功能 本次我们通过第一种，微信场景二维码的方式实现。交互逻辑： a.客户端调用服务端生成二维码接口，并开">
+<meta name="twitter:image" content="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/img.png">
+
+<link rel="canonical" href="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>微信扫码登录（公众号发送消息） | 秋少如风</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">秋少如风</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://blog.jinqiuhe.com/2022/03/25/微信扫码登录（公众号发送消息）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="贺金秋">
+      <meta itemprop="description" content="贺金秋的个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="秋少如风">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信扫码登录（公众号发送消息）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-25 16:02:38 / Modified: 17:32:57" itemprop="dateCreated datePublished" datetime="2022-03-25T16:02:38+08:00">2022-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/wechat/" itemprop="url" rel="index"><span itemprop="name">wechat</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="微信扫码登录（公众号发送消息）"><a href="#微信扫码登录（公众号发送消息）" class="headerlink" title="微信扫码登录（公众号发送消息）"></a>微信扫码登录（公众号发送消息）</h2><h3 id="1、需求概述："><a href="#1、需求概述：" class="headerlink" title="1、需求概述："></a>1、需求概述：</h3><p>pc提供微信扫码登录功能，用户在关注了公众号并且完成注册的前提下，可以通过微信扫描电脑端二维码登录。</p>
+<h3 id="2、简单分析"><a href="#2、简单分析" class="headerlink" title="2、简单分析"></a>2、简单分析</h3><p>实现微信扫描登录主要有三种方式：</p>
+<p>1.通过微信公众平台生成带参数的二维</p>
+<p>2.通过微信公众平台微信网页授权登录</p>
+<p>3.通过微信开发平台微信登录功能</p>
+<p>本次我们通过第一种，微信场景二维码的方式实现。交互逻辑：</p>
+<p>a.客户端调用服务端生成二维码接口，并开启轮询服务端扫码结果接口</p>
+<p>b.服务端调用微信获取场景二维码接口，并返回给客户端</p>
+<p>c.用户微信扫码，微信带着用户的openid推送事件到我们的服务端。</p>
+<p>d.服务端根据openid开展自己的业务，把扫码登录结果写入缓存中。</p>
+<p>e.客户端根据轮询的结果跳转登录成功或其他业务场景。</p>
+<h3 id="3、技术点："><a href="#3、技术点：" class="headerlink" title="3、技术点："></a>3、技术点：</h3><p>1.二维码生成逻辑</p>
+<p>2.Oauth认证流程</p>
+<p>3.微信事件推送</p>
+<h3 id="4、准备工作："><a href="#4、准备工作：" class="headerlink" title="4、准备工作："></a>4、准备工作：</h3><p>首先访问<a href="https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login" target="_blank" rel="noopener">公众平台测试账号系统</a>，申请一个测试账号，这样我们就可以获得调用微信公众号的所有接口能力,<br>并且获取到接入微信公众平台所需的appID和appsecret。</p>
+<p><img src="/2022/03/25/微信扫码登录（公众号发送消息）/img.png" alt="11"></p>
+<p>接着我们要配置接口配置信息，这是我们提供的一个接口，此接口有两个作用，一个是第一次微信验证开发者的时候，微信会发送一个get请求请求我们这个接口，另一个用处是<br>后面所有公众号允许的事件推送都是通过post请求到我们这个接口上，然后我们做自己的业务逻辑。</p>
+<p>1.get请求校验微信发送的签名信息，成为开发者（第一次配置接口配置信息的时候调用）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/validateWechat&quot;)</span><br><span class="line">@ApiOperation(value = &quot;验证签名&quot;)</span><br><span class="line">public void validateWechat() throws Exception &#123;</span><br><span class="line">    authService.validateWechat();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void validateWechat() throws Exception&#123;</span><br><span class="line">    HttpServletRequest request = RequestUtil.getRequest();</span><br><span class="line">    HttpServletResponse response = RequestUtil.getResponse();</span><br><span class="line">    log.info(&quot;微信在配置服务器传递验证参数&quot;);</span><br><span class="line">    String signature = request.getParameter(&quot;signature&quot;);</span><br><span class="line">    String echostr = request.getParameter(&quot;echostr&quot;);</span><br><span class="line">    String timestamp = request.getParameter(&quot;timestamp&quot;);</span><br><span class="line">    String nonce = request.getParameter(&quot;nonce&quot;);</span><br><span class="line">    String token = wiseduProperties.getWechat().getToken();</span><br><span class="line">    log.info(&quot;signature:&#123;&#125;, echostr:&#123;&#125;,timestamp:&#123;&#125;,nonce:&#123;&#125;&quot;, signature, echostr, timestamp, nonce);</span><br><span class="line">    log.info(&quot;本地配置token:&#123;&#125;&quot;, token);</span><br><span class="line">    String buildSign = WeChatUtils.getSignature(token, timestamp, nonce);</span><br><span class="line"></span><br><span class="line">    log.info(&quot;服务器生成签名信息:&#123;&#125;&quot;, buildSign);</span><br><span class="line"></span><br><span class="line">    if (buildSign.equals(signature) &amp;&amp; echostr != null) &#123;</span><br><span class="line">        log.info(&quot;是开发者校验，返回的echostr:&#123;&#125;&quot;, echostr);</span><br><span class="line">        log.info(&quot;服务生成签名与微信服务器生成签名相等，验证成功&quot;);</span><br><span class="line">        response.getWriter().write(echostr);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要就是微信会根据你配置的token加密生成签名echostr，请求你这个配置的接口，你根据你配置的token按照微信的加密规则加密后对比，一致的话，原样返回echostr给微信，至此开发者校验成功</p>
+<p>1.post请求推送事件给你（订阅、取关、扫描场景二维码、用户发送消息、点击自定义菜单等等，都会通过此接口通知你）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">@PostMapping(value = &quot;/validateWechat&quot;, produces = &quot;text/plain;charset=UTF-8&quot;)</span><br><span class="line">@ApiOperation(value = &quot;微信扫码回调&quot;)</span><br><span class="line">public String wechatMessageListener() throws Exception &#123;</span><br><span class="line">    return authService.wechatMessageListener();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public String wechatMessageListener() throws Exception &#123;</span><br><span class="line">    log.info(&quot;是事件推送回调&quot;);</span><br><span class="line">    HttpServletRequest request = RequestUtil.getRequest();</span><br><span class="line">    String rquestBody = WeChatUtils.inputStream2String(request.getInputStream(), &quot;UTF-8&quot;);</span><br><span class="line">    log.info(&quot;获取到微信推送消息正文:&#123;&#125;&quot;, rquestBody);</span><br><span class="line">    try &#123;</span><br><span class="line">        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();</span><br><span class="line">        dbf.setFeature(&quot;http://apache.org/xml/features/disallow-doctype-decl&quot;, true);</span><br><span class="line">        dbf.setFeature(&quot;http://xml.org/sax/features/external-general-entities&quot;, false);</span><br><span class="line">        dbf.setFeature(&quot;http://xml.org/sax/features/external-parameter-entities&quot;, false);</span><br><span class="line">        dbf.setFeature(&quot;http://apache.org/xml/features/nonvalidating/load-external-dtd&quot;, false);</span><br><span class="line">        dbf.setXIncludeAware(false);</span><br><span class="line">        dbf.setExpandEntityReferences(false);</span><br><span class="line">        DocumentBuilder db = dbf.newDocumentBuilder();</span><br><span class="line">        StringReader sr = new StringReader(rquestBody);</span><br><span class="line">        InputSource is = new InputSource(sr);</span><br><span class="line">        Document document = db.parse(is);</span><br><span class="line">        Element root = document.getDocumentElement();</span><br><span class="line">        NodeList fromUserName = document.getElementsByTagName(&quot;FromUserName&quot;);</span><br><span class="line">        String openId = fromUserName.item(0).getTextContent();</span><br><span class="line">        log.info(&quot;获取到扫码用户openid:&#123;&#125;&quot;, openId);</span><br><span class="line">        NodeList msgType = root.getElementsByTagName(&quot;MsgType&quot;);</span><br><span class="line">        String msgTypeStr = msgType.item(0).getTextContent();</span><br><span class="line">        if (&quot;event&quot;.equals(msgTypeStr)) &#123;</span><br><span class="line">            NodeList event = root.getElementsByTagName(&quot;Event&quot;);</span><br><span class="line">            String eventStr = event.item(0).getTextContent();</span><br><span class="line">            log.info(&quot;获取到event类型:&#123;&#125;&quot;, eventStr);</span><br><span class="line">            NodeList toUserName = root.getElementsByTagName(&quot;ToUserName&quot;);</span><br><span class="line">            String toUserNameStr = toUserName.item(0).getTextContent();</span><br><span class="line">            // 场景二维码</span><br><span class="line">            if (&quot;SCAN&quot;.equals(eventStr)) &#123;</span><br><span class="line">                NodeList eventKey = root.getElementsByTagName(&quot;EventKey&quot;);</span><br><span class="line">                String eventKeyStr = eventKey.item(0).getTextContent();</span><br><span class="line">                log.info(&quot;获取到扫码场景值:&#123;&#125;&quot;, eventKeyStr);</span><br><span class="line">                if (StringUtils.isNotBlank(eventKeyStr)) &#123;</span><br><span class="line">                    return scanLogin(openId, eventKeyStr, toUserNameStr);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 订阅</span><br><span class="line">            if (&quot;subscribe&quot;.equals(eventStr)) &#123;</span><br><span class="line">                return sendMessage(openId, WELCOME_TEXT.replaceAll(&quot;&lt;br&gt;&quot;, &quot;\n&quot;), toUserNameStr);</span><br><span class="line">            &#125;</span><br><span class="line">            // 注册菜单点击</span><br><span class="line">            if (&quot;VIEW&quot;.equals(eventStr)) &#123;</span><br><span class="line">                NodeList eventKey = root.getElementsByTagName(&quot;EventKey&quot;);</span><br><span class="line">                String eventKeyStr = eventKey.item(0).getTextContent();</span><br><span class="line">                log.info(&quot;获取到设置的跳转URL:&#123;&#125;&quot;, eventKeyStr);</span><br><span class="line">                if (StringUtils.contains(eventKeyStr, &quot;open.weixin.qq.com&quot;)) &#123;</span><br><span class="line">                    log.info(&quot;点击了注册菜单&quot;);</span><br><span class="line">                    return sendMessage(openId, REGISTER_TEXT.replaceAll(&quot;&lt;br&gt;&quot;, &quot;\n&quot;), toUserNameStr);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (&quot;text&quot;.equals(msgTypeStr)) &#123;</span><br><span class="line">            NodeList content = root.getElementsByTagName(&quot;Content&quot;);</span><br><span class="line">            String contentStr = content.item(0).getTextContent();</span><br><span class="line">            log.info(&quot;用户发送信息:&#123;&#125;&quot;, contentStr);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        log.error(&quot;微信调用服务后台出现错误&quot;, e);</span><br><span class="line">    &#125;</span><br><span class="line">    log.info(&quot;事件推送返回了success&quot;);</span><br><span class="line">    return &quot;success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意配置的这个接口会有两个用处，区别一个是get请求，一个是post请求，建议分开写。本次用到的微信扫码登录功能就是利用第二种事件回调。</p>
+<h3 id="5、代码实现："><a href="#5、代码实现：" class="headerlink" title="5、代码实现："></a>5、代码实现：</h3><p>前端生成一个uuid作为key，请求后台生成二维码接口，并开启轮询，查询扫码结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">// 获取微信登录二维码</span><br><span class="line">getWechatLoginQrCode() &#123;</span><br><span class="line">  this.scanSuccess = false;</span><br><span class="line">  this.uuid = this.generateUUID();</span><br><span class="line">  const url =</span><br><span class="line">    &apos;******?key=&apos; +</span><br><span class="line">    this.uuid;</span><br><span class="line">  this.wxLoginUrl = url;</span><br><span class="line">  this.invalidFlag = false;</span><br><span class="line">  this.wxTimer = setInterval(() =&gt; &#123;</span><br><span class="line">    this.checkWechatScan();</span><br><span class="line">  &#125;, 1000);</span><br><span class="line">&#125;,</span><br><span class="line">async checkWechatScan() &#123;</span><br><span class="line">  const res = await this.LOGIN_SERVER[&apos;checkWechatScan&apos;](</span><br><span class="line">    &#123;</span><br><span class="line">      key: this.uuid,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      transformRequest: [</span><br><span class="line">        function (data) &#123;</span><br><span class="line">          let ret = &apos;&apos;;</span><br><span class="line">          for (let it in data) &#123;</span><br><span class="line">            ret +=</span><br><span class="line">              encodeURIComponent(it) +</span><br><span class="line">              &apos;=&apos; +</span><br><span class="line">              encodeURIComponent(data[it]) +</span><br><span class="line">              &apos;&amp;&apos;;</span><br><span class="line">          &#125;</span><br><span class="line">          return ret;</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">      headers: &#123;</span><br><span class="line">        &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">  if (res.code === this.CodeControl[&apos;SUCCESS_CODE&apos;]) &#123;</span><br><span class="line">    if (res.result.code === this.CodeControl[&apos;SCAN_SUCCESS&apos;]) &#123;</span><br><span class="line">      // 扫码登录成功</span><br><span class="line">      this.firstScan = false;</span><br><span class="line">      clearInterval(this.wxTimer);</span><br><span class="line">      this.wxTimer = null;</span><br><span class="line">      this.invalidFlag = false;</span><br><span class="line">      this.scanSuccess = true;</span><br><span class="line">      setTimeout(() =&gt; &#123;</span><br><span class="line">        this.$router.push(&#123; path: &apos;/&apos; &#125;);</span><br><span class="line">      &#125;, 3000);</span><br><span class="line">    &#125; else if (res.result.code === this.CodeControl[&apos;SCAN_BIND&apos;]) &#123;</span><br><span class="line">      // 扫码登录失败 注册 / 绑定账户</span><br><span class="line">      this.firstScan = false;</span><br><span class="line">      clearInterval(this.wxTimer);</span><br><span class="line">      this.wxTimer = null;</span><br><span class="line">      this.btnRegister(&apos;follow&apos;);</span><br><span class="line">      this.openId = res.result.openId;</span><br><span class="line">      this.showBindFlag = true; // 显示可以绑定账号</span><br><span class="line">    &#125; else if (res.result.code === this.CodeControl[&apos;SCAN_WAITING&apos;]) &#123;</span><br><span class="line">      // 等待扫码中</span><br><span class="line">      this.invalidFlag = false;</span><br><span class="line">      this.firstScan = false;</span><br><span class="line">      // this.scanSuccess = true;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      if (this.firstScan) &#123;</span><br><span class="line">        clearInterval(this.wxTimer);</span><br><span class="line">        this.wxTimer = null;</span><br><span class="line">        this.getWechatLoginQrCode();</span><br><span class="line">        return;</span><br><span class="line">      &#125;</span><br><span class="line">      this.invalidFlag = true;</span><br><span class="line">      this.scanSuccess = false;</span><br><span class="line">      clearInterval(this.wxTimer);</span><br><span class="line">      this.wxTimer = null;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>后端调用微信生成带参数的场景二维码，主要分成三步。</p>
+<p>1.调用接口获取accesstoken，放到缓存中</p>
+<p>2.调用微信获取ticket票据</p>
+<p>3.调用微信获取二维码接口，返回客户端（具体流程参照<a href="https://developers.weixin.qq.com/doc/offiaccount/Account_Management/Generating_a_Parametric_QR_Code.html" target="_blank" rel="noopener">微信公众平台文档</a>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(value = &quot;/getWechatLoginQrCode&quot;)</span><br><span class="line">@ApiOperation(value = &quot;获取微信登录二维码&quot;)</span><br><span class="line">public void getWechatLoginQrcode(@RequestParam String key) &#123;</span><br><span class="line">    authService.getWechatLoginQrCode(key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public Object getWechatLoginQrCode(String key) &#123;</span><br><span class="line">    // 获取access_token</span><br><span class="line">    String accessToken = &quot;&quot;;</span><br><span class="line">    Object wechatToken = redisTemplate.opsForValue().get(BusinessConstant.Auth.SECURITY_WECHAT_TOKEN);</span><br><span class="line">    if (wechatToken == null) &#123;</span><br><span class="line">        // 调用微信获取token接口</span><br><span class="line">        Map&lt;String, Object&gt; result = WeChatUtils.getAccessToken(wiseduProperties.getWechat().getAppId(), wiseduProperties.getWechat().getAppSecret());</span><br><span class="line">        accessToken = MapUtil.getStr(result, &quot;accessToken&quot;);</span><br><span class="line">        if (StringUtils.isBlank(accessToken)) &#123;</span><br><span class="line">            throw new BusinessException(ErrorCodeEnum.AUTH20000005);</span><br><span class="line">        &#125;</span><br><span class="line">        redisTemplate.opsForValue().set(BusinessConstant.Auth.SECURITY_WECHAT_TOKEN, accessToken, MapUtil.getLong(result, &quot;expiresIn&quot;), TimeUnit.MILLISECONDS);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        accessToken = wechatToken.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    // 获取二维码需要的票据TICKET</span><br><span class="line">    String ticket = WeChatUtils.getQrCodeTiket(accessToken, key);</span><br><span class="line">    if (StringUtils.isBlank(ticket)) &#123;</span><br><span class="line">        throw new BusinessException(ErrorCodeEnum.AUTH20000005);</span><br><span class="line">    &#125;</span><br><span class="line">    // 获取二维码</span><br><span class="line">    WeChatUtils.getQrCodeStream(ticket);</span><br><span class="line">    // key丢到缓存中，用于存储扫码用户信息或openid</span><br><span class="line">    WechatScanResult result = new WechatScanResult();</span><br><span class="line">    result.setCode(Constants.SCAN_WAITING);</span><br><span class="line">    redisTemplate.opsForValue().set(BusinessConstant.Auth.SECURITY_WECHAT_SCAN + key, JSONUtil.writeValueAsString(result), 60000, TimeUnit.MILLISECONDS);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前端请求的key丢到缓存中，用于存储扫码用户信息或openid，前端轮询校验扫码结果的接口就是根据key去缓存中查询用户扫码结果。事件推送回调里面业务处理的时候，把扫码结果根据key写到缓存中。</p>
+<p>生成如下扫码登录的二维码：</p>
+<p><img src="/2022/03/25/微信扫码登录（公众号发送消息）/img_1.png" alt="12"></p>
+<p>用户扫码后微信回调我们配置的接口，会把场景key和用户openid传过来，根据openid查询我们的用户信息表，查询到就登录，查询不到就提示注册或者绑定账户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 微信扫码登录</span><br><span class="line"> *</span><br><span class="line"> * @param openId</span><br><span class="line"> * @param eventKey</span><br><span class="line"> * @param toUserName</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">private String scanLogin(String openId, String eventKey, String toUserName) &#123;</span><br><span class="line">    WxServiceMsgDto response = new WxServiceMsgDto();</span><br><span class="line">    response.setToUserName(openId);</span><br><span class="line">    response.setFromUserName(toUserName);</span><br><span class="line">    response.setCreateTime(System.currentTimeMillis());</span><br><span class="line">    response.setMsgType(&quot;text&quot;);</span><br><span class="line">    String content = &quot;&quot;;</span><br><span class="line">    // 缓存中拿出用户信息</span><br><span class="line">    if (redisTemplate.hasKey(BusinessConstant.Auth.SECURITY_WECHAT_SCAN + eventKey)) &#123;</span><br><span class="line">        WechatScanResult result = new WechatScanResult();</span><br><span class="line">        // 校验openId用户是否存在</span><br><span class="line">        User user = userService.getOne(Wrappers.lambdaQuery(User.class).eq(User::getOpenId, openId));</span><br><span class="line">        // 不存在进入绑定页面</span><br><span class="line">        result.setOpenId(openId);</span><br><span class="line">        if (null == user) &#123;</span><br><span class="line">            result.setCode(Constants.SCAN_BIND_ACCOUNT);</span><br><span class="line">            content = &quot;请注册，如已注册请在电脑端绑定账号&quot;;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 存在则进入登录成功页面</span><br><span class="line">            result.setCode(Constants.SCAN_SUCCESS);</span><br><span class="line">            content = &quot;登录成功&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        redisTemplate.opsForValue().set(BusinessConstant.Auth.SECURITY_WECHAT_SCAN + eventKey,</span><br><span class="line">                JSONUtil.writeValueAsString(result), 60000, TimeUnit.MILLISECONDS);</span><br><span class="line">    &#125;</span><br><span class="line">    response.setContent(content);</span><br><span class="line">    String result = WeChatUtils.messageToXml(response);</span><br><span class="line">    log.info(&quot;事件推送的回复:&#123;&#125;&quot;, result);</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这边接收到微信事件推送的时候，我们会根据扫码结果，给用户发送消息，提示用户登录成功还是其他情况。发送消息接口参照微信公众号文档定义的接口，返回xml格式的报文。<br>我们定义了一个实体，用于组装报文。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;p&gt;</span><br><span class="line"> * 微信消息通知报文</span><br><span class="line"> * &lt;/p&gt;</span><br><span class="line"> *</span><br><span class="line"> * @author jqhe</span><br><span class="line"> * @since 2022/3/22</span><br><span class="line"> */</span><br><span class="line">@XmlRootElement(name = &quot;xml&quot;)</span><br><span class="line">@XmlAccessorType(XmlAccessType.FIELD)</span><br><span class="line">@Data</span><br><span class="line">public class WxServiceMsgDto &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 事件类型，subscribe(订阅)、unsubscribe(取消订阅)</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name = &quot;Event&quot;)</span><br><span class="line">    private String Event;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 事件KEY值，qrscene_为前缀，后面为二维码的参数值</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name = &quot;EventKey&quot;)</span><br><span class="line">    private String EventKey;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 文本消息内容</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name = &quot;Content&quot;)</span><br><span class="line">    private String Content;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 消息类型，(text,event)</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name = &quot;MsgType&quot;)</span><br><span class="line">    private String MsgType;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 开发者微信号</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name = &quot;ToUserName&quot;)</span><br><span class="line">    private String ToUserName;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * fromUserName为关注人的openId</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name = &quot;FromUserName&quot;)</span><br><span class="line">    private String FromUserName;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 消息创建时间 （整型）</span><br><span class="line">     */</span><br><span class="line">    @XmlElement(name=&quot;CreateTime&quot;)</span><br><span class="line">    private Long CreateTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现以下效果</p>
+<p><img src="/2022/03/25/微信扫码登录（公众号发送消息）/img_2.png" alt="13"></p>
+<p>至此，微信扫码登录功能就实现拉！</p>
+<h3 id="6、踩坑记："><a href="#6、踩坑记：" class="headerlink" title="6、踩坑记："></a>6、踩坑记：</h3><p>1.该公众号提供的服务出现故障,请稍后再试 </p>
+<p><img src="/2022/03/25/微信扫码登录（公众号发送消息）/img_3.png" alt="14"></p>
+<p>微信公众号事件推送，调用我们的回调函数的时候，啥也不处理，根据文档响应success或者空串的时候，公众号报错”该公众号提供的服务出现故障,请稍后再试”</p>
+<p>注意看文档，检查我们接口返回的success是否带引号？一般带引号是springmvc配置返回json的时候引起的，WebMvcConfigurer类修改如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    @Bean</span><br><span class="line">    public StringHttpMessageConverter stringHttpMessageConverter() &#123;</span><br><span class="line">        return new StringHttpMessageConverter();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public void configureMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters) &#123;</span><br><span class="line">        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();</span><br><span class="line">        SimpleModule simpleModule = new SimpleModule();</span><br><span class="line">//		simpleModule.addSerializer(Long.class, ToStringSerializer.instance);</span><br><span class="line">//		simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);</span><br><span class="line">        ObjectMapper objectMapper = new ObjectMapper()</span><br><span class="line">                .registerModule(new ParameterNamesModule())</span><br><span class="line">                .registerModule(new Jdk8Module())</span><br><span class="line">                .registerModule(new JavaTimeModule())</span><br><span class="line">                .registerModule(simpleModule);</span><br><span class="line">        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);</span><br><span class="line">        jackson2HttpMessageConverter.setObjectMapper(objectMapper);</span><br><span class="line"></span><br><span class="line">        converters.add(jackson2HttpMessageConverter);</span><br><span class="line"></span><br><span class="line">        //字符串转换器</span><br><span class="line">        List&lt;MediaType&gt; listString = new ArrayList&lt;MediaType&gt;();</span><br><span class="line">        //字符串的消息类型为text/plain</span><br><span class="line">        listString.add(MediaType.TEXT_PLAIN);</span><br><span class="line">        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();</span><br><span class="line">        stringHttpMessageConverter.setSupportedMediaTypes(listString);</span><br><span class="line">        converters.add(stringHttpMessageConverter);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>回调函数定义的地方：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@PostMapping(value = &quot;/validateWechat&quot;, produces = &quot;text/plain;charset=UTF-8&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>记得加utf-8的编码格式，不然回复中文会乱码。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/25/SpringBoot下实现Scheduled定时任务个性化配置/" rel="prev" title="SpringBoot下实现Scheduled定时任务个性化配置">
+      <i class="fa fa-chevron-left"></i> SpringBoot下实现Scheduled定时任务个性化配置
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微信扫码登录（公众号发送消息）"><span class="nav-number">1.</span> <span class="nav-text">微信扫码登录（公众号发送消息）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、需求概述："><span class="nav-number">1.1.</span> <span class="nav-text">1、需求概述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、简单分析"><span class="nav-number">1.2.</span> <span class="nav-text">2、简单分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、技术点："><span class="nav-number">1.3.</span> <span class="nav-text">3、技术点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、准备工作："><span class="nav-number">1.4.</span> <span class="nav-text">4、准备工作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、代码实现："><span class="nav-number">1.5.</span> <span class="nav-text">5、代码实现：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、踩坑记："><span class="nav-number">1.6.</span> <span class="nav-text">6、踩坑记：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">贺金秋</p>
+  <div class="site-description" itemprop="description">贺金秋的个人博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">贺金秋</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
